@@ -1,11 +1,11 @@
 
 #include "ve.direct.h"
 
-bool ve::check(uint8_t *payload) {
-    uint8_t checksum = CHECKSUM;
-    for (unsigned int i = 0; i < sizeof(payload); i++)
+bool ve::check(byte *payload) {
+    byte checksum = CHECKSUM;
+    for (unsigned int i = 0; i < sizeof(payload) - 1; i++ )
         checksum -= payload[i];
-    return (checksum == 0);
+    return (checksum == payload[sizeof(payload)]);
 }
 
 char *ve::get(uint16_t id) {
@@ -20,9 +20,9 @@ char *ve::get(uint16_t id, uint8_t flag) {
 }
 
 void ve::finish(char *payload) {
-    Serial.println(payload);
     uint8_t checksum = CHECKSUM;
-    char *old = strncpy(old, payload, 11);
+    char *old = (char *)malloc(11 * sizeof(char));
+    strncpy(old, payload, 11);
     for (unsigned int i =0; i < sizeof(payload); i++)
         checksum -= payload[i];
     sprintf(payload, ":%s%02X\n", old, checksum);

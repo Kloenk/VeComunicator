@@ -19,6 +19,13 @@ namespace ve
 
     // finish line with checksum and add delimeters
     void finish(char *payload);
+
+    // hex decode namespace
+    namespace hex {
+        uint8_t decodenibble(char c);
+
+        
+    } // namespace hex
 } // namespace ve
 
 

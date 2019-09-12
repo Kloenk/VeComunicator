@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "/home/kloenk/.platformio/penv/bin:/home/kloenk/.platformio/penv:/home/kloenk/bin:/run/wrappers/bin:/home/kloenk/.nix-profile/bin:/etc/profiles/per-user/kloenk/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}

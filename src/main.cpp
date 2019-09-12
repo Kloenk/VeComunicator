@@ -1,12 +1,30 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 
 #include "main.h"
+	
+HTTPClient http;
 
 void setup() {
   Serial.begin(CONF_VE_BAUT);
   delay(200);
-  //char *req = ve::get(2030);
-  //Serial.print(req);
+
+  #ifdef CONF_WIFI_PASS
+  WiFi.begin(CONF_WIFI_SSID, CONF_WIFI_PASS);
+  #else
+  WiFi.begin(CONF_WIFI_SSID);
+  #endif
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+  }
+
+  http.begin(CONF_DATAPROM_SERVER);
+  http.addHeader("Content-Type", "text/plain");
+  http.addHeader("X-dataprom-name", "ve_protocol");
+  http.addHeader("X-dataprom-tags", CONF_DATAPROM_TAGS);
 }
 
 void loop() {
@@ -86,7 +104,7 @@ void loop() {
       while (Serial.available()) {
         input.concat(Serial.readStringUntil('\n'));
       }
-
+      http.POST(input);
     }
   }
 } 

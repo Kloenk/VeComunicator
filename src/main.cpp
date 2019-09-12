@@ -77,16 +77,16 @@ void loop() {
     0x100A, // Relay minimum enabled time
   };
   while (true) {
-    for (int i = 0; i < len(addresses); i += 5) {
+    for (int i = 0; i < (sizeof(addresses) / sizeof(uint16_t)); i += 5) {
       String input;
       for (int j = i; j < i+5; j++) {
         char *req = ve::get(addresses[j]);
         Serial.print(req);
       }
       while (Serial.available()) {
-        input.concate(Serial.readStringUntil('\n'));
+        input.concat(Serial.readStringUntil('\n'));
       }
-      
+
     }
   }
 } 

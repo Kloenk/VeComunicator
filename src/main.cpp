@@ -9,6 +9,7 @@ HTTPClient http;
 void setup() {
   Serial.begin(CONF_VE_BAUT);
   delay(200);
+  setup_display();
 
   #ifdef CONF_WIFI_PASS
   WiFi.begin(CONF_WIFI_SSID, CONF_WIFI_PASS);
@@ -101,10 +102,16 @@ void loop() {
         char *req = ve::get(addresses[j]);
         Serial.print(req);
       }
+      #ifdef CONF_SEND_DELAY
+      delay(CONF_SEND_DELAY);
+      #endif // CONF_SEND_DELAY
       while (Serial.available()) {
         input.concat(Serial.readStringUntil('\n'));
       }
       http.POST(input);
+      #ifdef CONF_SEND_DELAY
+      delay(CONF_SEND_DELAY);
+      #endif // CONF_SEND_DELAY
     }
   }
 } 

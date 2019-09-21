@@ -4,6 +4,7 @@
 #include "config.h"
 
 #include "ve.direct.h"
+#include "screen.h"
 
 
 

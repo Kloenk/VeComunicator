@@ -14,8 +14,14 @@ char *ve::get(uint16_t id) {
 
 char *ve::get(uint16_t id, uint8_t flag) {
     char *buffer = (char *)malloc(11 * sizeof(char));
-    sprintf(buffer, "7%04X%02X", id, flag);
-    ve::finish(buffer);
+    //sprintf(buffer, "7%04X%02X", id, flag);
+    //printf("%02x%02x ", a & 255, (a / 256) & 255);  // endian reversed
+    uint8_t checksum = 0x55;
+    checksum -= 7;
+    checksum -= id & 255;
+    checksum -= (id / 256) & 255;
+    sprintf(buffer, ":7%02X%02X%02X%02X\n", id & 255, (id / 256) & 255, flag, checksum); // id in little endian
+    //ve::finish(buffer);
     return buffer;
 }
 
@@ -23,8 +29,8 @@ void ve::finish(char *payload) {
     uint8_t checksum = CHECKSUM;
     char *old = (char *)malloc(11 * sizeof(char));
     strncpy(old, payload, 11);
-    for (unsigned int i =0; i < sizeof(payload); i++)
-        checksum -= payload[i];
+    /* for (unsigned int i =0; i < sizeof(payload); i++)
+        checksum -= payload[i]; */
     sprintf(payload, ":%s%02X\n", old, checksum);
     free(old);
 }
